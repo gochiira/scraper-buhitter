@@ -273,7 +273,8 @@ class Scrapper():
                 print("Upload illusts...")
                 for illust in searchResult:
                     print(f"ID:{illust['tweet_id']}")
-                    resp = self.uploadIllust(illust["link"])
+                    # resp = self.uploadIllust(illust["link"])
+                    resp = "end"
                     if resp == "skip":
                         continue
                     elif resp == "end":
@@ -292,7 +293,7 @@ class Scrapper():
                         )
                     )
             # 1時間待機する
-            self.waitLong()
+            self.waitShort()
 
 
 if __name__ == "__main__":
