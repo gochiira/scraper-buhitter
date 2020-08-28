@@ -43,7 +43,8 @@ class Scrapper():
                     "api_key": "Bearer hoge"
                 },
                 "buhitter_auth": {
-                    "session": ""
+                    "session": "",
+                    "twitter_cookie": ""
                 },
                 "deep_ai_auth": {
                     "api_key": ""
@@ -104,8 +105,11 @@ class Scrapper():
                 "last_scraped_id": 0
             }
         self.cl = Buhitter(
-            sessionId=self.settings["buhitter_auth"]["session"]
+            sessionId=self.settings["buhitter_auth"]["session"],
+            twitterCookies=self.settings["buhitter_auth"]["twitter_cookies"]
         )
+        if not self.cl.isLogined():
+            self.settings["buhitter_auth"]["session"] = self.cl.login()
 
     def uploadIllust(self, link):
         # ツイート情報が揃っていないのでAPIを呼ぶ
@@ -260,6 +264,9 @@ class Scrapper():
                     pageID=pageID
                 )
                 print(searchResult)
+                if searchResult == {}:
+                    self.settings["buhitter_auth"]["session"] = self.cl.login()
+                    continue
                 # 最新のイラストIDを取得
                 if pageID == 1:
                     newestID = max(
@@ -273,7 +280,7 @@ class Scrapper():
                 print("Upload illusts...")
                 for illust in searchResult:
                     print(f"ID:{illust['tweet_id']}")
-                    # resp = self.uploadIllust(illust["link"])
+                    resp = self.uploadIllust(illust["link"])
                     resp = "end"
                     if resp == "skip":
                         continue
@@ -293,7 +300,7 @@ class Scrapper():
                         )
                     )
             # 1時間待機する
-            self.waitShort()
+            self.waitLong()
 
 
 if __name__ == "__main__":
