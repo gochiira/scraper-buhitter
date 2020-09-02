@@ -55,9 +55,10 @@ class Buhitter(BuhitterConfig):
             headers=self.headers,
             cookies=self.cookies
         )
+        print("Buhitter_Auth_result", resp.status_code)
         self.headers["Note"] = "I am bot. I crawl once per 1 hour. Please contact to dsgamer777@gmail.com to stop crawl."
         self.headers["User-Agent"] = "GochiiraBot/1.0.0 (mail:dsgamer777@gmail.com)"
-        self.cookies["al"] = resp.headers["Set-Cookie"].split(";")[0].split("al=")[1]
+        #self.cookies["al"] = resp.headers["Set-Cookie"].split(";")[0].split("al=")[1]
         print(f"Login success: {sessionId}")
         return sessionId
 
